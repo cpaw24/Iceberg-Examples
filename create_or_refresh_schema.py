@@ -8,9 +8,12 @@ table_list = ["company", "ratios_ttm", "forecasts"]
 
 try:
    for schema, tab in zip(schema_list, table_list):
-      catalog.drop_table(identifier=f"docs.{tab}")
-      print(f"Dropped table: docs.{tab}")
-      catalog.create_table_if_not_exists(identifier=f"docs.{tab}", schema=schema)
-      print(f"Created table: docs.{tab}")
+
+       catalog.drop_table(identifier=f"docs.{tab}")
+       print(f"Dropped table: docs.{tab}")
+
+       catalog.create_table_if_not_exists(identifier=f"docs.{tab}", schema=schema)
+       print(f"Created table: docs.{tab}")
+
 except Exception as e:
    print(e)

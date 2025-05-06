@@ -14,29 +14,32 @@ pd.options.display.float_format = '{:,.2f}'.format
 print("Starting")
 print(datetime.datetime.now())
 
+# Target tables; repeat for each year
 target_tables = ["docs.company", "docs.ratios_ttm",
                  "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts",
                  "docs.forecasts", "docs.forecasts"]
 
+# Data files are pipe-delimited and quoted with double quotes
 input_data = ["/Volumes/DataExports/new-exports/company-reference.txt",  "/Volumes/DataExports/new-exports/key-ratios-ttm.txt",
               "/Volumes/DataExports/new-exports/forecast-2019.txt", "/Volumes/DataExports/new-exports/forecast-2020.txt",
               "/Volumes/DataExports/new-exports/forecast-2021.txt", "/Volumes/DataExports/new-exports/forecast-2022.txt",
               "/Volumes/DataExports/new-exports/forecast-2023.txt", "/Volumes/DataExports/new-exports/forecast-2024.txt",
               "/Volumes/DataExports/new-exports/forecast-2025.txt"]
 
+# Get schema column types
 schema_float = schema_float()
 schema_date = schema_date()
 schema_bool = schema_bool()
 schema_int = schema_int()
 schema_datetime = schema_datetime()
-row_list: List = []
+catalog = get_catalog()
+
 
 for table, input_file in zip(target_tables, input_data):
     with open(input_file, 'r') as f:
         reader = csv.reader(f, delimiter='|', lineterminator='\n', quotechar='\"', doublequote=True)
 
         # Read header and create mapping
-        catalog = get_catalog()
         table = catalog.load_table(table)
         target_columns = table.schema().column_names
         header = next(reader)
@@ -58,16 +61,18 @@ for table, input_file in zip(target_tables, input_data):
 
         # Create a Pandas dataframe and apply data types for each column in the lists
         df = pd.DataFrame.from_records(row_list, columns=target_columns, coerce_float=True)
+        # Type conversion
         for col in df.columns:
-            if ((df[col].dtype == "object") and (col in schema_date)):
+            if (df[col].dtype == "object") and (col in schema_date):
                 df[col] = pd.to_datetime(df[col], "coerce").dt.date
-            elif ((df[col].dtype == "object") and (col in schema_datetime)):
+            elif (df[col].dtype == "object") and (col in schema_datetime):
+                # Iceberg via pyarrow doesn't like nanoseconds at the time of this code, but you can us millisecond and microsecond precision
                 df[col] = pd.to_datetime(df[col], "coerce").astype('datetime64[s]')
-            elif ((df[col].dtype == "object") and (col in schema_float)):
+            elif (df[col].dtype == "object") and (col in schema_float):
                 df[col] = df[col].replace("", 0, regex=True).replace(",", "", regex=True).astype(float)
-            elif ((df[col].dtype == "object") and (col in schema_bool)):
+            elif (df[col].dtype == "object") and (col in schema_bool):
                 df[col] = df[col].astype(bool)
-            elif ((df[col].dtype == "object") and (col in schema_int)):
+            elif (df[col].dtype == "object") and (col in schema_int):
                 df[col] = df[col].astype(int)
 
         # Get rid of NaN values
@@ -79,9 +84,10 @@ for table, input_file in zip(target_tables, input_data):
         table.append(pa_table)
 
         print("Ending")
+        print(datetime.datetime.now())
+        # Reset lists for the next file
         row_list = []
         reordered_row = []
         df = []
         column_mapping = []
-        print(datetime.datetime.now())
 

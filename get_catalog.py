@@ -1,7 +1,7 @@
 from pyiceberg.catalog import load_catalog
 import ipyiceberg as ipg
 
-# Get keys from dictionary
+# Get keys from a dictionary
 props = ipg.cat["catalog"]["default"]
 type = props["type"]
 uri = props["uri"]
