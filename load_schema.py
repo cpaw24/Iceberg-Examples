@@ -17,10 +17,13 @@ print(datetime.datetime.now())
 # Target tables; repeat for each year
 target_tables = ["docs.company", "docs.ratios_ttm",
                  "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts",
-                 "docs.forecasts", "docs.forecasts"]
+                 "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts", "docs.forecasts",
+                 "docs.forecasts"]
 
 # Data files are pipe-delimited and quoted with double quotes
 input_data = ["/Volumes/DataExports/new-exports/company-reference.txt",  "/Volumes/DataExports/new-exports/key-ratios-ttm.txt",
+              "/Volumes/DataExports/new-exports/forecast-2015.txt", "/Volumes/DataExports/new-exports/forecast-2016.txt",
+              "/Volumes/DataExports/new-exports/forecast-2017.txt", "/Volumes/DataExports/new-exports/forecast-2018.txt",
               "/Volumes/DataExports/new-exports/forecast-2019.txt", "/Volumes/DataExports/new-exports/forecast-2020.txt",
               "/Volumes/DataExports/new-exports/forecast-2021.txt", "/Volumes/DataExports/new-exports/forecast-2022.txt",
               "/Volumes/DataExports/new-exports/forecast-2023.txt", "/Volumes/DataExports/new-exports/forecast-2024.txt",
@@ -33,6 +36,7 @@ schema_bool = schema_bool()
 schema_int = schema_int()
 schema_datetime = schema_datetime()
 catalog = get_catalog()
+row_list: List = []
 
 
 for table, input_file in zip(target_tables, input_data):
@@ -66,7 +70,7 @@ for table, input_file in zip(target_tables, input_data):
             if (df[col].dtype == "object") and (col in schema_date):
                 df[col] = pd.to_datetime(df[col], "coerce").dt.date
             elif (df[col].dtype == "object") and (col in schema_datetime):
-                # Iceberg via pyarrow doesn't like nanoseconds at the time of this code, but you can us millisecond and microsecond precision
+                # Iceberg doesn't like nanoseconds at the time of this code, but you can us millisecond and microsecond precision
                 df[col] = pd.to_datetime(df[col], "coerce").astype('datetime64[s]')
             elif (df[col].dtype == "object") and (col in schema_float):
                 df[col] = df[col].replace("", 0, regex=True).replace(",", "", regex=True).astype(float)

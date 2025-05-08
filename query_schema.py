@@ -64,14 +64,14 @@ company_yield_agg = pd.NamedAgg(column='Free_Cash_Flow_Yield_PCT', aggfunc='mean
 company_pe_agg = pd.NamedAgg(column='Price_To_Earnings', aggfunc='median')
 company_roe_agg = pd.NamedAgg(column='Return_On_Equity_PCT', aggfunc='median')
 
-company_cash_all = company_ratios_forecast_df.groupby(['Ticker', 'CompanyName']).agg(mean_5yr_cash=company_cash_agg,
-                                                                    mean_5yr_free_cash=company_free_cash_agg,
-                                                                    mean_5yr_discounted_cash=company_discounted_agg,
-                                                                    mean_5yr_cash_yield=company_yield_agg)
+company_cash_all = company_ratios_forecast_df.groupby(['Ticker', 'CompanyName']).agg(mean_10yr_cash=company_cash_agg,
+                                                                    mean_10yr_free_cash=company_free_cash_agg,
+                                                                    mean_10yr_discounted_cash=company_discounted_agg,
+                                                                    mean_10yr_cash_yield=company_yield_agg)
 
-company_metrics = company_ratios_forecast_df.groupby(['Ticker', 'CompanyName']).agg(median_5yr_tangible_bv_share=company_tangible_agg,
-                                                                   median_5yr_pe=company_pe_agg,
-                                                                   median_5yr_roe_pct=company_roe_agg)
+company_metrics = company_ratios_forecast_df.groupby(['Ticker', 'CompanyName']).agg(median_tangible_bv_share=company_tangible_agg,
+                                                                   median_pe=company_pe_agg,
+                                                                   median_roe_pct=company_roe_agg)
 
 # Just company + forecasts
 company_forecast_df['Dividend_Per_Share_Growth'] = company_forecast_df['Dividend_Per_Share_Growth'].astype(float)
