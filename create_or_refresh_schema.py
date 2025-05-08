@@ -3,6 +3,7 @@ from schema_def import company_schema, ratio_schema_ttm, forecast_schema
 
 catalog = get_catalog()
 
+# schema list contains each schema definitions
 schema_list = [company_schema, ratio_schema_ttm, forecast_schema]
 table_list = ["company", "ratios_ttm", "forecasts"]
 

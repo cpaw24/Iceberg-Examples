@@ -1,7 +1,7 @@
 from pyiceberg.schema import Schema
 from pyiceberg.types import NestedField, StringType, DoubleType, DateType, BooleanType, IntegerType, TimestampType
 
-
+# First table includes keywords for schema definition; the remaining two tables are positional
 company_schema = Schema(
 	fields=(NestedField(field_id=1, name="AsOfDate", field_type=TimestampType(), required=True),
 			NestedField(field_id=2, name="Ticker", field_type=StringType(), required=True),

@@ -19,7 +19,7 @@ catalog = get_catalog()
 # List tables in docs namespace
 catalog.list_tables("docs")
 
-# Load tables
+# Load tables from Iceberg docs namespace
 company = catalog.load_table("docs.company")
 ratios_ttm = catalog.load_table("docs.ratios_ttm")
 forecasts = catalog.load_table("docs.forecasts")
@@ -45,7 +45,7 @@ company_ratios_df = pd.merge(company_df, ratios_ttm_df, how='inner', on='Ticker'
 company_forecast_df = pd.merge(company_df, forecasts_df, how='inner', on='Ticker').drop_duplicates(subset=['Ticker']).reset_index(drop=True)
 company_ratios_forecast_df = pd.merge(company_ratios_df, forecasts_df, how='inner', on='Ticker').drop_duplicates(subset=['Ticker']).reset_index(drop=True)
 
-# company + ratios + forecasts type changes
+# company + ratios + forecasts type changes; everything is an object initially in pandas
 company_ratios_forecast_df['Cash_Per_Share'] = company_ratios_forecast_df['Cash_Per_Share_x'].astype(float)
 company_ratios_forecast_df['Tangible_Book_Value_Share'] = company_ratios_forecast_df['Dividend_Per_Share'].astype(float)
 company_ratios_forecast_df['EBITDA_Growth_PCT'] = company_ratios_forecast_df['Tangible_Book_Value_Per_Share'].astype(float)
@@ -64,6 +64,7 @@ company_yield_agg = pd.NamedAgg(column='Free_Cash_Flow_Yield_PCT', aggfunc='mean
 company_pe_agg = pd.NamedAgg(column='Price_To_Earnings', aggfunc='median')
 company_roe_agg = pd.NamedAgg(column='Return_On_Equity_PCT', aggfunc='median')
 
+# Get results for each aggregate
 company_cash_all = company_ratios_forecast_df.groupby(['Ticker', 'CompanyName']).agg(mean_10yr_cash=company_cash_agg,
                                                                     mean_10yr_free_cash=company_free_cash_agg,
                                                                     mean_10yr_discounted_cash=company_discounted_agg,
@@ -140,8 +141,7 @@ ax4.tick_params(axis='x', rotation=45)
 plt.tight_layout()
 plt.show()
 
-# 3. Correlation Matrix of Key Metrics
-# Combine relevant metrics
+# 3. Correlation Matrix of Key Metrics; Combine relevant metrics
 correlation_metrics = pd.merge(
     company_cash_all.reset_index(),
     company_metrics.reset_index(),

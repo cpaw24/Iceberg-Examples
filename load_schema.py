@@ -89,7 +89,7 @@ for table, input_file in zip(target_tables, input_data):
 
         print("Ending")
         print(datetime.datetime.now())
-        # Reset lists for the next file
+        # Reset lists for the next file iteration
         row_list = []
         reordered_row = []
         df = []
