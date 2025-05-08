@@ -79,8 +79,8 @@ company_forecast_df['Debt_Growth_PCT'] = company_forecast_df['Debt_Growth_PCT'].
 
 forecast_div_agg = pd.NamedAgg(column='Dividend_Per_Share_Growth', aggfunc='mean')
 forecast_div2_agg = pd.NamedAgg(column='Debt_Growth_PCT', aggfunc='median')
-forecasts_metrics = forecasts_df.groupby(['Ticker']).agg(mean_5yr_dps_growth=forecast_div_agg,
-                                                         median_5yr_debt_growth_pct=forecast_div2_agg)
+forecasts_metrics = forecasts_df.groupby(['Ticker']).agg(mean_10yr_dps_growth=forecast_div_agg,
+                                                         median_10yr_debt_growth_pct=forecast_div2_agg)
 
 df_div = forecasts_df.groupby('CalendarYear')['Dividend_Per_Share_Growth'].agg(['mean', 'median', 'quantile'])
 df_sga = forecasts_df.groupby('CalendarYear')['Debt_Growth_PCT'].agg(['mean', 'median', 'quantile'])
@@ -126,14 +126,14 @@ ax2.set_title('Distribution of Company Performance Metrics')
 ax2.tick_params(axis='x', rotation=45)
 
 # Top 10 Companies by Free Cash Flow Yield
-top_cash_yield = company_cash_all.nlargest(10, 'mean_5yr_cash_yield')
-sns.barplot(data=top_cash_yield.reset_index(), x='CompanyName', y='mean_5yr_cash_yield', ax=ax3)
+top_cash_yield = company_cash_all.nlargest(10, 'mean_10yr_cash_yield')
+sns.barplot(data=top_cash_yield.reset_index(), x='CompanyName', y='mean_10yr_cash_yield', ax=ax3)
 ax3.set_title('Top 10 Companies by Free Cash Flow Yield')
 ax3.tick_params(axis='x', rotation=45)
 
 # Top 10 Companies by ROE
-top_roe = company_metrics.nlargest(10, 'median_5yr_roe_pct')
-sns.barplot(data=top_roe.reset_index(), x='CompanyName', y='median_5yr_roe_pct', ax=ax4)
+top_roe = company_metrics.nlargest(10, 'median_roe_pct')
+sns.barplot(data=top_roe.reset_index(), x='CompanyName', y='median_roe_pct', ax=ax4)
 ax4.set_title('Top 10 Companies by Return on Equity')
 ax4.tick_params(axis='x', rotation=45)
 
