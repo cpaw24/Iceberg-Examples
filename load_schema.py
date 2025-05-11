@@ -6,6 +6,7 @@ import csv
 import datetime as datetime
 from typing import List
 
+# Format the pandas display output
 pd.options.display.max_rows = 50
 pd.options.display.max_columns = 50
 pd.options.display.width = 1000
@@ -70,7 +71,8 @@ for table, input_file in zip(target_tables, input_data):
             if (df[col].dtype == "object") and (col in schema_date):
                 df[col] = pd.to_datetime(df[col], "coerce").dt.date
             elif (df[col].dtype == "object") and (col in schema_datetime):
-                # Iceberg doesn't like nanoseconds at the time of this code, but you can us millisecond and microsecond precision
+                # Iceberg doesn't like nanoseconds at the time of this code,
+                # but you can us millisecond and microsecond precision; using seconds in this case
                 df[col] = pd.to_datetime(df[col], "coerce").astype('datetime64[s]')
             elif (df[col].dtype == "object") and (col in schema_float):
                 df[col] = df[col].replace("", 0, regex=True).replace(",", "", regex=True).astype(float)

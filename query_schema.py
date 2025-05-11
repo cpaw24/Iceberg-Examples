@@ -4,7 +4,6 @@ from pyiceberg.expressions import GreaterThan, GreaterThanOrEqual, EqualTo, NotE
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
 # Pandas output display formatting
 pd.options.display.max_rows = 50
 pd.options.display.max_columns = 50
@@ -85,6 +84,12 @@ forecasts_metrics = forecasts_df.groupby(['Ticker']).agg(mean_10yr_dps_growth=fo
 
 df_div = forecasts_df.groupby('CalendarYear')['Dividend_Per_Share_Growth'].agg(['mean', 'median', 'quantile'])
 df_sga = forecasts_df.groupby('CalendarYear')['Debt_Growth_PCT'].agg(['mean', 'median', 'quantile'])
+
+print(forecasts_metrics.head(50))
+print(df_div.head(50))
+print(df_sga.head(50))
+print(company_cash_all.head(50))
+print(company_metrics.head(50))
 
 # Set the style for better-looking graphs
 plt.style.reload_library()
