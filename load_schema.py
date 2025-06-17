@@ -4,7 +4,7 @@ from get_catalog import get_catalog
 from schema_cols import schema_bool, schema_float, schema_int, schema_date, schema_datetime
 import csv
 import datetime as datetime
-from typing import List
+
 
 # Format the pandas display output
 pd.options.display.max_rows = 50
