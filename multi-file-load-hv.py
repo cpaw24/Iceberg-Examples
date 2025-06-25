@@ -29,7 +29,7 @@ df = spark.read.csv('hdfs://localhost:9000/input_files/forecast-*.txt',
 
 # spark is an existing SparkSession
 hive_jdbc = {
-	"url": "jdbc:hive2://localhost:10001/default;transportMode=http;httpPath=cliservice",
+	"url": "jdbc:hive2://localhost:10001/default",
 	"driver": "org.apache.hive.jdbc.HiveDriver",
 	"table": "forecasts"
 }

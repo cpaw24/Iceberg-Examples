@@ -8,14 +8,14 @@
       <jdbc-url>jdbc:hive2://localhost:10001/default;transportMode=http;httpPath=cliservice</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Hive Metastore" read-only="true" uuid="f09d28b3-c553-4a97-ab32-25fb7b765085">
+    <data-source source="LOCAL" name="Hive Metastore" read-only="true" uuid="99f6ae62-8d84-43ed-86d3-498a96c7baf8">
       <synchronize>true</synchronize>
       <remarks>Wrapper For Hive Metastore from Big Data Tools plugin</remarks>
       <jdbc-driver>com.dbschema.ZeppelinSparkJdbcDriver</jdbc-driver>
-      <jdbc-url>Hive Metastore@HiveMetastoreConnections@-1700859087274613890</jdbc-url>
+      <jdbc-url>Hive Metastore@HiveMetastoreConnections@-5753603860960751276</jdbc-url>
       <jdbc-additional-properties>
         <property name="forceUseDriverIcon" value="true" />
-        <property name="connectionId" value="Hive Metastore@HiveMetastoreConnections@-1700859087274613890" />
+        <property name="connectionId" value="Hive Metastore@HiveMetastoreConnections@-5753603860960751276" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
